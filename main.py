@@ -4,6 +4,7 @@ from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.firefox.options import Options
 from time import sleep
 from selenium.webdriver.common.by import By
+from tqdm import tqdm
 
 # create an HTML Session object
 session = HTMLSession()
@@ -34,7 +35,7 @@ service = Service('/snap/bin/firefox.geckodriver')
 
 driver = webdriver.Firefox(service=service, options=firefox_options)
 
-for detailurl in urls:
+for detailurl in urls[0:3]:
     driver.get(detailurl)
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
     sleep(3)
@@ -55,9 +56,8 @@ for detailurl in urls:
     print(video_url)
 
     # https://www.wcostream.org/fire-force-season-2-episode-22-english-dubbed
-    filename = detailurl.split('/')[-1]
+    filename = detailurl.split('/')[-1] + '.mp4'
     print(filename)
-
     header = {
         'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/117.0',
         'Accept': '*/*',
@@ -73,10 +73,10 @@ for detailurl in urls:
     }
 
     r = session.get(video_url, headers=header, stream=True)
-    print(r.headers)
-    # save the video
+    total_size = int(r.headers['Content-Length']) 
+    
     with open(filename, 'wb') as f:
+        progress_bar = tqdm(total=total_size, unit='B', unit_scale=True) 
         for chunk in r.iter_content(chunk_size=1024):
-            if chunk:
-                f.write(chunk)
-
+            f.write(chunk)
+            progress_bar.update(len(chunk))
