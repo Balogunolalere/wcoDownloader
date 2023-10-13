@@ -9,6 +9,7 @@ from time import sleep
 from selenium.webdriver.common.by import By
 from tqdm import tqdm
 import logging
+from time import sleep
 
 # create an HTML Session object
 session = HTMLSession()
@@ -83,6 +84,8 @@ def download_video(url_range):
             continue
 
         total_size = int(r.headers['Content-Length']) 
+
+        sleep(3)
 
         with open(filename, 'wb') as f:
             progress_bar = tqdm(total=total_size, unit='B', unit_scale=True) 
