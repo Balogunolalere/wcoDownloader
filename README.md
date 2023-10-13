@@ -21,7 +21,7 @@ Usage
 
 Copy code
 
-`python anime_downloader.py`
+`python main.py`
 
 3.  The program will scrape the page to find all the episode links, then launch Firefox browsers to go through each episode page and extract the video URL.
 4.  The video will be downloaded using Requests and saved with the episode filename. A progress bar is shown using tqdm.
@@ -56,5 +56,3 @@ Credits
 -------
 
 The web scraper is for educational purposes only.
-
-
