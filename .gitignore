@@ -1,4 +1,4 @@
 .ipynb_checkpoints
-fire-force*
+*.mp4
 env
 geckodriver.log
